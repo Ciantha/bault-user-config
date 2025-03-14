@@ -4,6 +4,91 @@
 #include <dt-bindings/zmk/outputs.h>
 
 / {
+    combos {
+        compatible = "zmk,combos";
+
+        combo_esc {
+            bindings = <&kp ESCAPE>;
+            key-positions = <0 1>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_del {
+            bindings = <&kp DELETE>;
+            key-positions = <0 2>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_tab {
+            bindings = <&kp TAB>;
+            key-positions = <11 12>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_single_quote {
+            bindings = <&kp SINGLE_QUOTE>;
+            key-positions = <6 7>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_double_quote {
+            bindings = <&kp DOUBLE_QUOTES>;
+            key-positions = <6 7 8>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_enter {
+            bindings = <&kp ENTER>;
+            key-positions = <19 18 17>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_aa {
+            bindings = <&kp RA(W)>;
+            key-positions = <8 9>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_ae {
+            bindings = <&kp RA(A)>;
+            key-positions = <18 19>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_question {
+            bindings = <&kp QUESTION>;
+            key-positions = <27 26>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_slash {
+            bindings = <&kp SLASH>;
+            key-positions = <27 28>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+
+        combo_capsword {
+            bindings = <&caps_word>;
+            key-positions = <12 17>;
+            layers = <0 1>;
+            timeout-ms = <30>;
+        };
+    };
+};
+
+&mt { tapping-term-ms = <170>; };
+
+/ {
 
     behaviors {
         hm: homerow_mods {
@@ -17,6 +102,46 @@
             require-prior-idle-ms = <0>;
             flavor = "tap-preferred";
         };
+
+        semicolon: semicolon {
+            compatible = "zmk,behavior-mod-morph";
+            label = "SEMICOLON";
+            bindings = <&kp COMMA>, <&kp SEMI>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        colon: colon {
+            compatible = "zmk,behavior-mod-morph";
+            label = "COLON";
+            bindings = <&kp DOT>, <&kp SEMI>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+            keep-mods = <(MOD_RSFT|MOD_LSFT)>;
+        };
+
+        plus_equals: plus_equals {
+            compatible = "zmk,behavior-hold-tap";
+            label = "PLUS_EQUALS";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <125>;
+        };
+
+        backspace: backspace {
+            compatible = "zmk,behavior-hold-tap";
+            label = "BACKSPACE";
+            bindings = <&mo>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <150>;
+            flavor = "balanced";
+        };
     };
 
 
@@ -25,27 +150,36 @@
 
         base {
             bindings = <
-                &kp Q      &kp W      &kp E      &kp R      &kp T      &kp Y      &kp U      &kp I      &kp O      &kp P      &kp LEFT_BRACKET
-                &hm LEFT_CONTROL A  &hm LEFT_ALT S  &hm LGUI D  &hm LEFT_SHIFT F  &kp G      &kp H      &hm RIGHT_SHIFT J  &hm RIGHT_GUI K  &hm LEFT_ALT L  &hm RCTRL SEMICOLON
-                &kp Z      &kp X      &kp C      &kp V      &kp B      &kp N      &kp M      &kp COMMA      &kp PERIOD      &kp SLASH
-                &kp N0      &mo 3      &kp ENTER      &kp SPACE      &kp BACKSPACE      &mo 1      &mo 2      &kp N0
+                &kp Q      &kp W      &kp E      &kp R      &kp T      &kp Y      &kp U      &kp I      &kp O      &kp P      &mo3
+                &lt 2 A    &kp S  &mt LSHFT D    &kp F      &kp G      &kp H      &kp J  &mt RSHFT K    &kp L      &kp RA(O)
+                &kp Z      &kp X      &kp C      &kp V      &kp B      &kp N      &kp M  &semicolon     &colon     &kp RSHFT
+                &none &kp LCTRL      &kp LALT     &backspace 1 BACKSPACE    &kp SPACE    &kp PRINTSCREEN       &kp LGUI &none
             >;
         };
 
 
-        layer_1 {
+        num_sym {
             bindings = <
-                &kp N1  &kp N2  &kp N3  &kp N4  &kp N5  &kp N6  &kp N7    &kp N8    &kp N9     &kp N0     &studio_unlock
-                &trans  &trans  &trans  &trans  &trans  &trans  &trans    &kp UP    &kp MINUS  &kp EQUAL
-                &trans  &trans  &trans  &trans  &trans  &trans  &kp LEFT  &kp DOWN  &kp RIGHT  &trans
-                &kp N0   &trans  &trans  &trans  &trans  &trans    &trans &kp N0
+                &kp EXCL   &kp AT     &kp HASH       &kp DOLLAR  &kp PERCENT     &kp CARET        &kp AMPERSAND  &kp ASTERISK      &kp GRAVE               &kp BACKSLASH   &studio_unlock
+                &kp N1     &kp N2     &kp N3         &kp N4      &kp N5          &kp N6           &kp N7         &kp N8            &kp N9                   &kp N0
+                &kp MINUS  &kp UNDER  &kp LESS_THAN  &kp LPAR    &kp LEFT_BRACE  &kp RIGHT_BRACE  &kp RPAR       &kp GREATER_THAN  &plus_equals PLUS EQUAL  &trans
+                &none   &trans  &trans  &trans  &trans  &trans    &trans &none
+            >;
+        };
+
+        nav {
+            bindings = <
+                &trans            &kp LG(LEFT)  &kp UP     &kp LG(RIGHT)  &trans     &trans    &trans  &trans  &sys_reset  &bootloader    &trans
+                &trans            &kp LEFT      &kp DOWN   &kp RIGHT      &kp END    &trans    &trans  &trans  &bt BT_CLR  &out OUT_TOG
+                &trans            &kp LC(X)     &kp LC(C)  &kp LC(V)      &kp LC(Z)  &trans    &trans  &trans  &trans      &trans
+                &none    &trans      &kp CAPS   &kp LBKT     &kp RBKT        &trans     &trans  &none
             >;
         };
 
 
         connectivity {
             bindings = <
-                &trans  &trans  &trans  &trans  &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4  &bootloader
+                &trans  &trans  &trans  &trans  &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4  &trans
                 &trans  &trans  &trans  &trans  &trans  &trans        &trans        &trans        &trans        &trans
                 &trans  &trans  &trans  &trans  &trans  &bt BT_CLR    &out OUT_BLE  &out OUT_USB  &out OUT_TOG  &trans
                 &kp N0   &trans  &trans  &trans  &trans        &trans        &trans &kp N0
